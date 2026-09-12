@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Content Planner | National Media Authority</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F4F0EA; --card:#FBFAF6; --white:#fff;
+  --line:#DED6C6; --line2:#EBE4D8;
+  --ink:#2C2A27; --brown:#604330; --taupe:#8C7868; --ash:#6B5E54;
+  --gold:#EAC49B; --copper:#AA604E; --ok:#5F7A5A;
+  --p-reg:#604330; --p-std:#AA604E; --p-lead:#B8893F;
+  --p-part:#5F7A5A; --p-serv:#5E7E96; --p-com:#8078A0;
+  --r:9px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--paper);color:var(--ink);font-family:'IBM Plex Sans','IBM Plex Sans Arabic',system-ui,sans-serif;
+  font-size:14px;line-height:1.45;-webkit-font-smoothing:antialiased;}
+button,input,select,textarea{font-family:inherit;font-size:inherit;color:inherit;}
+button{cursor:pointer;border:none;background:none;}
+:focus-visible{outline:2px solid var(--brown);outline-offset:2px;border-radius:5px;}
+.ar{font-family:'IBM Plex Sans Arabic',sans-serif;direction:rtl;unicode-bidi:isolate;}
+.num{font-variant-numeric:tabular-nums;}
+
+/* ---------- header ---------- */
+header{position:sticky;top:0;z-index:30;background:var(--paper);border-bottom:1px solid var(--line);}
+.seam{height:3px;background:var(--brown);}
+.seam i{display:block;height:1px;background:var(--gold);position:relative;top:3px;}
+.bar{max-width:1560px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
+.mark{display:flex;align-items:center;gap:8px;flex:none;}
+.mark svg{height:28px;display:block;}
+.mark b{font-size:10.5px;font-weight:600;color:var(--brown);letter-spacing:.06em;line-height:1.2;}
+.titles{flex:1;min-width:150px;}
+.titles h1{font-size:16px;font-weight:600;color:var(--brown);}
+.titles div{font-size:11px;color:var(--taupe);}
+.nav{display:flex;align-items:center;gap:5px;}
+.nav b{font-size:14.5px;font-weight:600;min-width:168px;text-align:center;color:var(--ink);}
+.seg{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--card);}
+.seg button{padding:6px 15px;font-size:12.5px;color:var(--ash);}
+.seg button.on{background:var(--brown);color:#fff;}
+.btn{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:6px 13px;font-size:12.5px;color:var(--ash);transition:.14s;white-space:nowrap;}
+.btn:hover{border-color:var(--taupe);}
+.btn.on{background:var(--brown);border-color:var(--brown);color:#fff;}
+.btn.solid{background:var(--brown);border-color:var(--brown);color:#fff;font-weight:500;}
+.btn.solid:hover{background:#4E3627;}
+
+/* ---------- stats ---------- */
+.stats{max-width:1560px;margin:0 auto;padding:0 20px 12px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.stat{background:var(--card);border:1px solid var(--line2);border-radius:var(--r);padding:9px 12px;}
+.stat .k{font-size:10.5px;color:var(--taupe);letter-spacing:.04em;}
+.stat .v{font-size:20px;font-weight:600;color:var(--brown);line-height:1.2;}
+.stat .v small{font-size:11.5px;font-weight:400;color:var(--taupe);}
+.stat .v.warn{color:var(--copper);}
+.mix{display:flex;height:7px;border-radius:4px;overflow:hidden;margin-top:7px;background:var(--line2);}
+.mix i{display:block;height:100%;}
+.mixkey{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;font-size:9.5px;color:var(--taupe);}
+.mixkey span{display:inline-flex;align-items:center;gap:3px;}
+.mixkey em{width:6px;height:6px;border-radius:2px;font-style:normal;}
+
+/* ---------- toolbar ---------- */
+.tools{max-width:1560px;margin:0 auto;padding:0 20px 12px;display:flex;gap:7px;align-items:center;flex-wrap:wrap;}
+.tools .lbl{font-size:10px;color:var(--taupe);letter-spacing:.08em;text-transform:uppercase;}
+.tools .sep{width:1px;height:18px;background:var(--line);margin:0 3px;}
+.tools .btn{padding:5px 11px;font-size:12px;}
+
+/* ---------- board ---------- */
+main{max-width:1560px;margin:0 auto;padding:0 20px 90px;}
+
+.week{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;align-items:start;}
+.col{background:var(--card);border:1px solid var(--line2);border-radius:var(--r);min-height:400px;display:flex;flex-direction:column;transition:.12s;}
+.col.today{border-color:var(--brown);}
+.col.drop{background:#F7F1E6;border-color:var(--gold);border-style:dashed;}
+.colh{padding:9px 10px 7px;border-bottom:1px solid var(--line2);display:flex;justify-content:space-between;align-items:baseline;}
+.colh .dn{font-size:12px;color:var(--taupe);letter-spacing:.05em;}
+.colh .dd{font-size:15px;font-weight:600;color:var(--ink);}
+.col.today .dd{color:var(--brown);}
+.colh .ct{font-size:10px;color:var(--taupe);}
+.colb{padding:8px;flex:1;display:flex;flex-direction:column;gap:6px;}
+.addrow{margin:0 8px 8px;border:1px dashed var(--line);border-radius:7px;padding:7px;font-size:11.5px;color:var(--taupe);text-align:center;transition:.12s;}
+.addrow:hover{border-color:var(--brown);color:var(--brown);background:#fff;}
+.emptyday{font-size:11px;color:#B9AC9C;text-align:center;padding:14px 4px;}
+
+/* post card */
+.p{background:var(--white);border:1px solid var(--line2);border-inline-start:3px solid var(--taupe);
+  border-radius:7px;padding:7px 8px;text-align:start;width:100%;cursor:grab;transition:.12s;position:relative;}
+.p:hover{border-color:var(--taupe);box-shadow:0 2px 6px rgba(96,67,48,.07);transform:translateY(-1px);}
+.p:active{cursor:grabbing;}
+.p.dragging{opacity:.35;}
+.p .time{font-size:10px;color:var(--taupe);font-variant-numeric:tabular-nums;display:flex;align-items:center;gap:5px;}
+.p .time .st{width:6px;height:6px;border-radius:50%;flex:none;}
+.p .t{font-size:12px;line-height:1.35;margin-top:3px;overflow-wrap:anywhere;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.p .ta{font-size:10.5px;color:var(--taupe);margin-top:2px;overflow-wrap:anywhere;
+  display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden;}
+.p .f{display:flex;align-items:center;gap:4px;margin-top:5px;font-size:9.5px;color:var(--taupe);flex-wrap:wrap;}
+.p .pf{background:var(--paper);border-radius:3px;padding:1px 4px;}
+.p .star{position:absolute;top:6px;inset-inline-end:6px;color:var(--gold);font-size:11px;line-height:1;}
+.p .clash{color:var(--copper);font-weight:500;}
+.st.draft{background:var(--line);} .st.review{background:var(--gold);}
+.st.approved{background:#A8AFD8;} .st.published{background:var(--ok);} .st.changes{background:var(--copper);}
+
+/* month */
+.mhead{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:6px;}
+.mhead div{font-size:10.5px;color:var(--taupe);text-align:center;letter-spacing:.06em;}
+.month{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;}
+.mc{background:var(--card);border:1px solid var(--line2);border-radius:var(--r);min-height:124px;padding:6px;
+  display:flex;flex-direction:column;gap:4px;transition:.12s;position:relative;}
+.mc.pad{background:transparent;border:none;}
+.mc.today{border-color:var(--brown);}
+.mc.drop{background:#F7F1E6;border-color:var(--gold);border-style:dashed;}
+.mc.gap{background:repeating-linear-gradient(45deg,var(--card),var(--card) 7px,#F1EBE1 7px,#F1EBE1 14px);}
+.mc .n{font-size:11.5px;font-weight:600;color:var(--ash);text-align:end;}
+.mc.today .n{color:var(--brown);}
+.mc .mp{background:var(--white);border:1px solid var(--line2);border-inline-start:3px solid var(--taupe);
+  border-radius:5px;padding:4px 5px;text-align:start;width:100%;cursor:grab;font-size:10.5px;line-height:1.3;}
+.mc .mp:hover{border-color:var(--taupe);}
+.mc .mp .mt{overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.mc .mp .mm{font-size:9px;color:var(--taupe);display:flex;align-items:center;gap:4px;margin-top:2px;}
+.mc .mm .st{width:5px;height:5px;border-radius:50%;}
+.mc .link{font-size:10px;color:var(--brown);text-align:start;text-decoration:underline;text-underline-offset:2px;}
+.mc .qa{position:absolute;inset-inline-end:5px;bottom:4px;font-size:13px;color:#C6B9A8;line-height:1;opacity:0;transition:.12s;}
+.mc:hover .qa{opacity:1;} .mc .qa:hover{color:var(--brown);}
+
+/* ---------- editor ---------- */
+.scrim{position:fixed;inset:0;background:rgba(44,42,39,.34);opacity:0;pointer-events:none;transition:.2s;z-index:40;}
+.scrim.on{opacity:1;pointer-events:auto;}
+.ed{position:fixed;top:0;bottom:0;inset-inline-end:0;width:min(452px,94vw);background:var(--card);
+  border-inline-start:1px solid var(--line);z-index:50;transform:translateX(103%);
+  transition:transform .25s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;}
+.ed.on{transform:none;}
+.edh{padding:15px 18px 13px;border-bottom:1px solid var(--line2);position:relative;}
+.edh .k{font-size:10px;letter-spacing:.14em;color:var(--taupe);text-transform:uppercase;}
+.edh h2{font-size:16px;font-weight:600;color:var(--brown);margin-top:4px;}
+.edh .x{position:absolute;inset-inline-end:14px;top:14px;font-size:17px;color:var(--taupe);line-height:1;}
+.edb{padding:14px 18px;overflow:auto;flex:1;}
+.f{margin-bottom:13px;}
+.f label{display:block;font-size:10.5px;color:var(--taupe);letter-spacing:.05em;text-transform:uppercase;margin-bottom:4px;}
+.f input,.f select,.f textarea{width:100%;background:var(--white);border:1px solid var(--line);border-radius:7px;
+  padding:9px 10px;font-size:13px;}
+.f input:focus,.f select:focus,.f textarea:focus{border-color:var(--brown);outline:none;}
+.f textarea{min-height:60px;resize:vertical;}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.pick{display:flex;flex-wrap:wrap;gap:5px;}
+.pick button{border:1px solid var(--line);background:var(--white);border-radius:999px;padding:5px 11px;font-size:12px;color:var(--ash);}
+.pick button.on{background:var(--brown);border-color:var(--brown);color:#fff;}
+.chk{display:flex;align-items:center;gap:8px;background:var(--white);border:1px solid var(--line);border-radius:7px;padding:9px 10px;font-size:12.5px;}
+.chk input{width:auto;}
+.hint{font-size:11px;color:var(--taupe);margin-top:5px;}
+.hint.warn{color:var(--copper);}
+.edf{padding:12px 18px;border-top:1px solid var(--line2);display:flex;gap:8px;align-items:center;}
+.edf .save{flex:1;background:var(--brown);color:#fff;border-radius:8px;padding:11px;font-size:13px;font-weight:600;}
+.edf .gh{border:1px solid var(--line);background:var(--white);border-radius:8px;padding:11px 13px;font-size:12.5px;color:var(--ash);}
+.edf .del{color:var(--copper);border-color:#E4CFC7;}
+
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(18px);background:#3B322B;color:#F4F0EA;
+  padding:10px 14px 10px 18px;border-radius:999px;font-size:12.5px;opacity:0;pointer-events:none;transition:.2s;z-index:60;
+  display:flex;align-items:center;gap:12px;}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto;}
+.toast button{color:var(--gold);font-weight:600;font-size:12.5px;}
+
+footer{max-width:1560px;margin:0 auto;padding:0 20px 26px;font-size:10.5px;color:var(--taupe);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;}
+
+@media (max-width:1100px){
+  .week{grid-template-columns:repeat(2,1fr);}
+  .col{min-height:200px;}
+}
+@media (max-width:900px){
+  .stats{grid-template-columns:repeat(2,1fr);}
+  .month{gap:4px;} .mc{min-height:86px;padding:4px;}
+  .mc .mp .mm{display:none;}
+}
+@media (max-width:700px){
+  .bar{padding:10px 14px;gap:10px;}
+  .mark b{display:none;}
+  .titles{flex:1 1 100%;order:-1;}
+  .nav b{min-width:140px;font-size:13.5px;}
+  .stats,.tools,main,footer{padding-inline:14px;}
+  .tools{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;}
+  .tools::-webkit-scrollbar{display:none;}
+  .tools .btn,.tools .lbl{flex:none;}
+  .week{grid-template-columns:1fr;}
+  .col{min-height:0;}
+  .f2{grid-template-columns:1fr;}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;}}
+@media print{header .tools,.seg,.ed,.scrim,.addrow,.qa{display:none;}header{position:static;}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="seam"><i></i></div>
+  <div class="bar">
+    <!-- Swap for the authority logo: <img src="logo.png" style="height:28px"> -->
+    <div class="mark">
+      <svg viewBox="0 0 40 40" aria-hidden="true">
+        <circle cx="20" cy="20" r="18.5" fill="none" stroke="#604330" stroke-width="1.4"/>
+        <path d="M20 6.5V33.5M9.5 12.5l21 15M30.5 12.5l-21 15" stroke="#EAC49B" stroke-width="1.4"/>
+        <circle cx="20" cy="20" r="6.4" fill="#604330"/>
+      </svg>
+      <b>NATIONAL<br>MEDIA AUTHORITY</b>
+    </div>
+    <div class="titles">
+      <h1>Content Planner</h1>
+      <div>Plan and schedule the month &nbsp;·&nbsp; <span class="ar">تخطيط وجدولة المحتوى</span></div>
+    </div>
+    <div class="nav">
+      <button class="btn" onclick="shift(-1)" aria-label="Previous">‹</button>
+      <b id="range"></b>
+      <button class="btn" onclick="shift(1)" aria-label="Next">›</button>
+      <button class="btn" onclick="goToday()">Today</button>
+    </div>
+    <div class="seg">
+      <button id="vw-week" onclick="setView('week')" class="on">Week</button>
+      <button id="vw-month" onclick="setView('month')">Month</button>
+    </div>
+    <button class="btn solid" onclick="newPost()">+ New post</button>
+  </div>
+
+  <div class="stats" id="stats"></div>
+
+  <div class="tools">
+    <span class="lbl">Platform</span>
+    <button class="btn on" data-f="pf" data-v="all" onclick="setF('pf','all')">All</button>
+    <button class="btn" data-f="pf" data-v="X" onclick="setF('pf','X')">X</button>
+    <button class="btn" data-f="pf" data-v="Instagram" onclick="setF('pf','Instagram')">Instagram</button>
+    <button class="btn" data-f="pf" data-v="LinkedIn" onclick="setF('pf','LinkedIn')">LinkedIn</button>
+    <button class="btn" data-f="pf" data-v="TikTok" onclick="setF('pf','TikTok')">TikTok</button>
+    <button class="btn" data-f="pf" data-v="YouTube" onclick="setF('pf','YouTube')">YouTube</button>
+    <span class="sep"></span>
+    <span class="lbl">Pillar</span>
+    <span id="pillarFilters"></span>
+    <span class="sep"></span>
+    <button class="btn" data-f="st" data-v="open" onclick="toggleF('st','open')">Needs action</button>
+    <button class="btn" data-f="ch" data-v="1" onclick="toggleF('ch','1')">Chairman</button>
+    <span class="sep"></span>
+    <button class="btn" onclick="exportCSV()">Export CSV</button>
+  </div>
+</header>
+
+<main><div id="board"></div></main>
+
+<footer>
+  <span>National Media Authority · content planner · sample data, saved in this browser</span>
+  <span class="ar">الهيئة الوطنية للإعلام · أداة تخطيط المحتوى</span>
+</footer>
+
+<div class="scrim" id="scrim" onclick="closeEd()"></div>
+<aside class="ed" id="ed" aria-hidden="true"></aside>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ================= reference data ================= */
+const DAYS=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const MON=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const MSH=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const TODAY=new Date(2026,7,21);
+
+const PLAT=['X','Instagram','LinkedIn','TikTok','YouTube'];
+const FORMATS=['Static','Motion','Video','Carousel','Coverage','Reels'];
+const OWNERS=['Account Manager','Video Producer','Designer','Arabic Copywriter'];
+const ROUTES=['Communications Team',"Chairman's Office",'Legal & Regulation'];
+const STATUS={draft:'Draft',review:'In review',approved:'Approved',published:'Published',changes:'Changes requested'};
+const PILLARS={
+  'Regulation':{ar:'تشريعات',c:'var(--p-reg)'},
+  'Content Standards':{ar:'معايير المحتوى',c:'var(--p-std)'},
+  'Leadership':{ar:'القيادات',c:'var(--p-lead)'},
+  'Partnerships':{ar:'الشراكات',c:'var(--p-part)'},
+  'Services':{ar:'الخدمات',c:'var(--p-serv)'},
+  'Community':{ar:'المجتمع',c:'var(--p-com)'}
+};
+
+/* ================= data ================= */
+const KEY='nma-planner-v1';
+let D=[], seq=1;
+
+function seed(){
+  D=[];seq=1;
+  const S=[
+   [2,'09:30','Static','Services','Maalen platform explainer: three steps to register your ad','ما هي منصة «معلن»؟ ثلاث خطوات لتسجيل إعلانك',['X','Instagram'],'published'],
+   [3,'11:00','Motion','Regulation','When does content need a permit? The rule in 30 seconds','متى يحتاج المحتوى إلى تصريح؟ القاعدة في 30 ثانية',['Instagram','TikTok'],'published'],
+   [4,'13:00','Video','Leadership','Chairman remarks, national media forum','كلمة رئيس الهيئة في ملتقى الإعلام الوطني',['X','YouTube'],'published',1],
+   [5,'10:00','Carousel','Content Standards','Five common mistakes when publishing ad content','خمسة أخطاء شائعة عند نشر محتوى إعلاني',['Instagram','LinkedIn'],'published'],
+   [6,'12:30','Coverage','Partnerships','MoU signing with Dubai Press Club','توقيع مذكرة تفاهم مع نادي دبي للصحافة',['X','LinkedIn'],'published'],
+   [6,'18:00','Reels','Community','What makes you a publisher? A question on the street','ماذا يعني أن تكون ناشراً؟ سؤال في الشارع',['Instagram','TikTok'],'published'],
+   [9,'09:00','Static','Services','Licensing service: the documents you need','خدمة التراخيص: المستندات المطلوبة',['X','LinkedIn'],'published'],
+   [10,'11:30','Motion','Regulation','Penalties for misleading content: what the law says','عقوبات النشر المضلل: ماذا يقول القانون',['Instagram','X'],'published'],
+   [11,'14:00','Video','Leadership','Vice Chairman on the content economy','نائب الرئيس: اقتصاد المحتوى',['LinkedIn','YouTube'],'published'],
+   [12,'10:30','Coverage','Partnerships','International media delegation tours the authority','جولة في مقر الهيئة مع وفد إعلامي دولي',['X','Instagram'],'published'],
+   [13,'16:00','Carousel','Community','Emirati creators: where did they start?','صنّاع محتوى إماراتيون: من أين بدأوا؟',['Instagram','TikTok'],'published'],
+   [16,'09:30','Static','Content Standards','Before you share: three questions to ask yourself','قبل أن تشارك: ثلاث أسئلة اسألها لنفسك',['X','Instagram'],'published'],
+   [17,'12:00','Coverage','Leadership','Chairman receives a GCC media delegation','رئيس الهيئة يستقبل وفد هيئة إعلامية خليجية',['X'],'published',1],
+   [18,'15:00','Reels','Services','Media inspection: what happens on the visit','التفتيش الإعلامي: ماذا يحدث في الزيارة؟',['Instagram','TikTok'],'published'],
+   [19,'11:00','Motion','Regulation','Creator licensing: who needs it?','ترخيص صنّاع المحتوى: من يحتاجه؟',['X','Instagram','LinkedIn'],'published'],
+   [20,'13:30','Carousel','Partnerships','Partnership impact across the first half','أثر شراكاتنا خلال النصف الأول',['LinkedIn','X'],'published'],
+   [21,'17:30','Video','Leadership','Chairman address, BRIDGE Summit','كلمة رئيس الهيئة في قمة بريدج',['X','Instagram','YouTube'],'review',1],
+   [22,'10:00','Static','Content Standards','Did you know resharing can be a violation?','هل تعرف أن إعادة النشر قد تكون مخالفة؟',['X','Instagram'],'approved'],
+   [23,'12:00','Motion','Regulation','Ownership rights in digital content','حقوق الملكية في المحتوى الرقمي',['Instagram','LinkedIn'],'review'],
+   [23,'19:00','Reels','Community','Friday question: which platform do you trust for news?','سؤال الجمعة: أي منصة تثق بها في الأخبار؟',['Instagram','TikTok'],'changes'],
+   [24,'09:30','Coverage','Partnerships','MoU with a national university on talent','مذكرة تفاهم مع جامعة وطنية لتأهيل الكوادر',['X','LinkedIn'],'approved'],
+   [25,'11:00','Carousel','Services','Quick guide to the authority’s digital services','دليل سريع لخدمات الهيئة الرقمية',['Instagram','X'],'draft'],
+   [26,'14:00','Video','Leadership','Behind the scenes: the new website launch','لقطات من كواليس إطلاق الموقع الجديد',['Instagram','YouTube'],'draft'],
+   [27,'10:00','Motion','Regulation','The media regulation law: what changed?','قانون تنظيم الإعلام: ماذا تغيّر؟',['X','Instagram','LinkedIn'],'review'],
+   [27,'16:30','Coverage','Leadership','Chairman at the Arab Media Forum','مشاركة رئيس الهيئة في منتدى الإعلام العربي',['X','YouTube'],'draft',1],
+   [30,'09:00','Static','Community','Month in review: what the authority delivered','حصاد الشهر: أبرز ما قدمته الهيئة',['Instagram','LinkedIn'],'draft'],
+   [31,'12:00','Carousel','Content Standards','Media content standards in eight cards','معايير المحتوى الإعلامي في ثماني بطاقات',['Instagram','X'],'draft']
+  ];
+  S.forEach(r=>D.push({
+    id:seq++, d:iso(new Date(2026,7,r[0])), t:r[1], fmt:r[2], pillar:r[3],
+    en:r[4], arT:r[5], pf:r[6], status:r[7], chair:!!r[8],
+    owner:r[8]?'Video Producer':'Account Manager',
+    route:r[8]?"Chairman's Office":'Communications Team', note:''
+  }));
+}
+function iso(dt){return `${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}-${String(dt.getDate()).padStart(2,'0')}`;}
+function parse(s){const[a,b,c]=s.split('-').map(Number);return new Date(a,b-1,c);}
+function save(){try{localStorage.setItem(KEY,JSON.stringify({D,seq}));}catch(e){}}
+function load(){
+  try{const r=localStorage.getItem(KEY);if(r){const o=JSON.parse(r);D=o.D;seq=o.seq;return true;}}catch(e){}
+  return false;
+}
+if(!load()) seed();
+
+/* ================= state ================= */
+let view='week', anchor=new Date(2026,7,21), F={pf:'all',pl:'all',st:null,ch:null}, editing=null, dragId=null, undoSnap=null;
+
+const wkStart=d=>{const x=new Date(d);x.setDate(x.getDate()-x.getDay());x.setHours(0,0,0,0);return x;};
+const sameD=(a,b)=>iso(a)===iso(b);
+const pass=p=>(F.pf==='all'||p.pf.includes(F.pf))&&(F.pl==='all'||p.pillar===F.pl)
+  &&(!F.st||p.status==='review'||p.status==='changes'||p.status==='draft')&&(!F.ch||p.chair);
+const onDay=ds=>D.filter(p=>p.d===ds&&pass(p)).sort((a,b)=>a.t.localeCompare(b.t));
+const pc=p=>PILLARS[p.pillar]?PILLARS[p.pillar].c:'var(--taupe)';
+
+/* clash = same platform, same day, under 90 min apart */
+function clash(p){
+  return D.some(o=>o.id!==p.id&&o.d===p.d&&o.pf.some(x=>p.pf.includes(x))&&
+    Math.abs(mins(o.t)-mins(p.t))<90);
+}
+const mins=t=>{const[h,m]=t.split(':').map(Number);return h*60+m;};
+
+/* ================= render ================= */
+function render(){
+  document.getElementById('vw-week').classList.toggle('on',view==='week');
+  document.getElementById('vw-month').classList.toggle('on',view==='month');
+  const ws=wkStart(anchor), we=new Date(ws);we.setDate(we.getDate()+6);
+  document.getElementById('range').textContent = view==='week'
+    ? `${MSH[ws.getMonth()]} ${ws.getDate()} – ${MSH[we.getMonth()]} ${we.getDate()}, ${we.getFullYear()}`
+    : `${MON[anchor.getMonth()]} ${anchor.getFullYear()}`;
+  drawPillarFilters(); drawStats();
+  document.getElementById('board').innerHTML = view==='week'?weekView():monthView();
+  bindDrag();
+}
+
+function drawPillarFilters(){
+  const el=document.getElementById('pillarFilters');
+  if(el.dataset.done) { el.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.v===F.pl)); return; }
+  el.innerHTML=`<button class="btn on" data-f="pl" data-v="all" onclick="setF('pl','all')">All</button>`+
+    Object.keys(PILLARS).map(k=>`<button class="btn" data-f="pl" data-v="${k}" onclick="setF('pl','${k}')">
+      <span style="display:inline-block;width:7px;height:7px;border-radius:2px;background:${PILLARS[k].c};margin-inline-end:5px"></span>${k}</button>`).join('');
+  el.dataset.done=1;
+}
+
+function drawStats(){
+  const m=D.filter(p=>parse(p.d).getMonth()===anchor.getMonth());
+  const days=new Date(anchor.getFullYear(),anchor.getMonth()+1,0).getDate();
+  let empty=0;
+  for(let i=1;i<=days;i++){ if(!D.some(p=>p.d===iso(new Date(anchor.getFullYear(),anchor.getMonth(),i)))) empty++; }
+  const open=m.filter(p=>p.status==='review'||p.status==='changes').length;
+  const clashes=m.filter(clash).length;
+  const counts=Object.keys(PILLARS).map(k=>({k,n:m.filter(p=>p.pillar===k).length}));
+  const tot=Math.max(m.length,1);
+  document.getElementById('stats').innerHTML=`
+    <div class="stat"><div class="k">Scheduled in ${MSH[anchor.getMonth()]}</div>
+      <div class="v">${m.length}<small> posts</small></div></div>
+    <div class="stat"><div class="k">Days with nothing planned</div>
+      <div class="v ${empty>6?'warn':''}">${empty}<small> of ${days}</small></div></div>
+    <div class="stat"><div class="k">Needs a decision</div>
+      <div class="v ${open>3?'warn':''}">${open}<small> in review / changes</small></div>
+      ${clashes?`<div class="k" style="color:var(--copper);margin-top:3px">${clashes} timing clash${clashes>1?'es':''}</div>`:''}</div>
+    <div class="stat"><div class="k">Pillar mix</div>
+      <div class="mix">${counts.map(c=>`<i style="width:${c.n/tot*100}%;background:${PILLARS[c.k].c}"></i>`).join('')}</div>
+      <div class="mixkey">${counts.map(c=>`<span><em style="background:${PILLARS[c.k].c}"></em>${c.n}</span>`).join('')}</div></div>`;
+}
+
+function weekView(){
+  const ws=wkStart(anchor);
+  let h='';
+  for(let i=0;i<7;i++){
+    const d=new Date(ws);d.setDate(ws.getDate()+i);
+    const ds=iso(d), list=onDay(ds), today=sameD(d,TODAY);
+    h+=`<div class="col ${today?'today':''}" data-day="${ds}">
+      <div class="colh"><div><div class="dn">${DAYS[i]}</div><div class="dd num">${MSH[d.getMonth()]} ${d.getDate()}</div></div>
+        <div class="ct">${list.length||''}</div></div>
+      <div class="colb">
+        ${list.length?list.map(card).join(''):'<div class="emptyday">Nothing planned</div>'}
+      </div>
+      <button class="addrow" onclick="newPost('${ds}')">+ Add post</button>
+    </div>`;
+  }
+  return `<div class="week">${h}</div>`;
+}
+
+function card(p){
+  const cl=clash(p);
+  return `<button class="p" draggable="true" data-id="${p.id}" onclick="openEd(${p.id})" style="border-inline-start-color:${pc(p)}">
+    ${p.chair?'<span class="star">★</span>':''}
+    <div class="time"><span class="st ${p.status}"></span>${p.t}${cl?' <span class="clash">· clash</span>':''}</div>
+    <div class="t">${esc(p.en)}</div>
+    <div class="ta ar">${esc(p.arT)}</div>
+    <div class="f">${p.pf.map(x=>`<span class="pf">${x}</span>`).join('')}<span>${p.fmt}</span></div>
+  </button>`;
+}
+
+function monthView(){
+  const y=anchor.getFullYear(),m=anchor.getMonth();
+  const first=new Date(y,m,1), days=new Date(y,m+1,0).getDate();
+  let cells='';
+  for(let i=0;i<first.getDay();i++) cells+='<div class="mc pad"></div>';
+  for(let d=1;d<=days;d++){
+    const dt=new Date(y,m,d), ds=iso(dt), list=onDay(ds), today=sameD(dt,TODAY);
+    const none=!D.some(p=>p.d===ds);
+    const show=list.slice(0,3), rest=list.length-show.length;
+    cells+=`<div class="mc ${today?'today':''} ${none?'gap':''}" data-day="${ds}">
+      <div class="n num">${d}</div>
+      ${show.map(p=>`<button class="mp" draggable="true" data-id="${p.id}" onclick="openEd(${p.id})" style="border-inline-start-color:${pc(p)}">
+        <div class="mt">${esc(p.en)}</div>
+        <div class="mm"><span class="st ${p.status}"></span>${p.t}</div></button>`).join('')}
+      ${rest>0?`<button class="link" onclick="jumpWeek('${ds}')">+${rest} more — open week</button>`:''}
+      <button class="qa" onclick="event.stopPropagation();newPost('${ds}')" aria-label="Add post">+</button>
+    </div>`;
+  }
+  return `<div class="mhead">${DAYS.map(d=>`<div>${d}</div>`).join('')}</div><div class="month">${cells}</div>`;
+}
+const esc=s=>String(s).replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]));
+
+/* ================= drag to reschedule ================= */
+function bindDrag(){
+  document.querySelectorAll('[draggable="true"]').forEach(el=>{
+    el.addEventListener('dragstart',e=>{dragId=+el.dataset.id;el.classList.add('dragging');e.dataTransfer.effectAllowed='move';});
+    el.addEventListener('dragend',()=>{dragId=null;document.querySelectorAll('.dragging').forEach(x=>x.classList.remove('dragging'));});
+  });
+  document.querySelectorAll('[data-day]').forEach(z=>{
+    z.addEventListener('dragover',e=>{e.preventDefault();z.classList.add('drop');});
+    z.addEventListener('dragleave',()=>z.classList.remove('drop'));
+    z.addEventListener('drop',e=>{
+      e.preventDefault();z.classList.remove('drop');
+      const p=D.find(x=>x.id===dragId); if(!p||p.d===z.dataset.day) return;
+      snapshot(); const from=p.d; p.d=z.dataset.day; save(); render();
+      const dt=parse(p.d);
+      toast(`Moved to ${MSH[dt.getMonth()]} ${dt.getDate()}`,true);
+    });
+  });
+}
+function jumpWeek(ds){ anchor=parse(ds); view='week'; render(); }
+
+/* ================= editor ================= */
+function newPost(ds){
+  editing={id:null,d:ds||iso(anchor),t:'10:00',fmt:'Static',pillar:'Regulation',en:'',arT:'',
+    pf:['X'],status:'draft',chair:false,owner:'Account Manager',route:'Communications Team',note:''};
+  drawEd('New post');
+}
+function openEd(id){ editing=JSON.parse(JSON.stringify(D.find(p=>p.id===id))); drawEd('Edit post'); }
+
+function drawEd(title){
+  const p=editing;
+  document.getElementById('ed').innerHTML=`
+    <div class="edh"><button class="x" onclick="closeEd()" aria-label="Close">✕</button>
+      <div class="k">${title}</div><h2>${p.en?esc(p.en).slice(0,60):'Untitled post'}</h2></div>
+    <div class="edb">
+      <div class="f"><label>Title — English</label>
+        <input id="i-en" value="${p.en.replace(/"/g,'&quot;')}" placeholder="What the post says"></div>
+      <div class="f"><label>العنوان — عربي</label>
+        <input id="i-ar" class="ar" dir="rtl" value="${p.arT.replace(/"/g,'&quot;')}" placeholder="نص المنشور بالعربية"></div>
+      <div class="f2">
+        <div class="f"><label>Date</label><input type="date" id="i-d" value="${p.d}"></div>
+        <div class="f"><label>Time</label><input type="time" id="i-t" value="${p.t}"></div>
+      </div>
+      <div class="f"><label>Platforms</label>
+        <div class="pick" id="i-pf">${PLAT.map(x=>`<button class="${p.pf.includes(x)?'on':''}" onclick="togPf('${x}')">${x}</button>`).join('')}</div>
+        <div class="hint" id="clashHint"></div></div>
+      <div class="f2">
+        <div class="f"><label>Format</label><select id="i-fmt">${FORMATS.map(x=>`<option ${x===p.fmt?'selected':''}>${x}</option>`).join('')}</select></div>
+        <div class="f"><label>Pillar</label><select id="i-pl">${Object.keys(PILLARS).map(x=>`<option ${x===p.pillar?'selected':''}>${x}</option>`).join('')}</select></div>
+      </div>
+      <div class="f2">
+        <div class="f"><label>Owner</label><select id="i-ow">${OWNERS.map(x=>`<option ${x===p.owner?'selected':''}>${x}</option>`).join('')}</select></div>
+        <div class="f"><label>Status</label><select id="i-st">${Object.entries(STATUS).map(([k,v])=>`<option value="${k}" ${k===p.status?'selected':''}>${v}</option>`).join('')}</select></div>
+      </div>
+      <div class="f"><label>Approval route</label><select id="i-rt">${ROUTES.map(x=>`<option ${x===p.route?'selected':''}>${x}</option>`).join('')}</select></div>
+      <div class="f"><label class="chk"><input type="checkbox" id="i-ch" ${p.chair?'checked':''} onchange="togChair()"> Chairman content — 3-hour delivery window</label></div>
+      <div class="f"><label>Note to the team</label><textarea id="i-nt" placeholder="Anything the team needs to know">${esc(p.note)}</textarea></div>
+    </div>
+    <div class="edf">
+      <button class="save" onclick="savePost()">${p.id?'Save changes':'Add to calendar'}</button>
+      ${p.id?`<button class="gh" onclick="dupPost()">Duplicate</button><button class="gh del" onclick="delPost()">Delete</button>`:''}
+    </div>`;
+  document.getElementById('ed').classList.add('on');
+  document.getElementById('ed').setAttribute('aria-hidden','false');
+  document.getElementById('scrim').classList.add('on');
+  setTimeout(()=>document.getElementById('i-en').focus(),80);
+  ['i-d','i-t'].forEach(id=>document.getElementById(id).addEventListener('change',checkClash));
+  checkClash();
+}
+function togPf(x){
+  const i=editing.pf.indexOf(x);
+  if(i>-1){ if(editing.pf.length>1) editing.pf.splice(i,1); } else editing.pf.push(x);
+  document.getElementById('i-pf').innerHTML=PLAT.map(v=>`<button class="${editing.pf.includes(v)?'on':''}" onclick="togPf('${v}')">${v}</button>`).join('');
+  checkClash();
+}
+function togChair(){
+  editing.chair=document.getElementById('i-ch').checked;
+  if(editing.chair) document.getElementById('i-rt').value="Chairman's Office";
+}
+function checkClash(){
+  const d=document.getElementById('i-d').value, t=document.getElementById('i-t').value;
+  const hit=D.filter(o=>o.id!==editing.id&&o.d===d&&o.pf.some(x=>editing.pf.includes(x))&&Math.abs(mins(o.t)-mins(t))<90);
+  const el=document.getElementById('clashHint');
+  el.className='hint'+(hit.length?' warn':'');
+  el.textContent=hit.length?`Close to “${hit[0].en.slice(0,42)}” at ${hit[0].t} on the same platform.`:'Two posts on the same platform within 90 minutes get flagged.';
+}
+function readForm(){
+  const g=id=>document.getElementById(id).value;
+  return {d:g('i-d'),t:g('i-t'),en:g('i-en').trim(),arT:g('i-ar').trim(),fmt:g('i-fmt'),pillar:g('i-pl'),
+    owner:g('i-ow'),status:g('i-st'),route:g('i-rt'),note:g('i-nt').trim(),
+    chair:document.getElementById('i-ch').checked,pf:editing.pf.slice()};
+}
+function savePost(){
+  const v=readForm();
+  if(!v.en){ document.getElementById('i-en').focus(); toast('Give the post a title first'); return; }
+  snapshot();
+  if(editing.id){ Object.assign(D.find(p=>p.id===editing.id),v); toast('Saved',true); }
+  else { D.push(Object.assign({id:seq++},v)); toast('Added to the calendar',true); }
+  save(); closeEd(); render();
+}
+function dupPost(){
+  snapshot();
+  const v=readForm(); D.push(Object.assign({id:seq++},v,{status:'draft',en:v.en+' (copy)'}));
+  save(); closeEd(); render(); toast('Duplicated as a draft',true);
+}
+function delPost(){
+  snapshot();
+  D=D.filter(p=>p.id!==editing.id); save(); closeEd(); render(); toast('Deleted',true);
+}
+function closeEd(){
+  document.getElementById('ed').classList.remove('on');
+  document.getElementById('ed').setAttribute('aria-hidden','true');
+  document.getElementById('scrim').classList.remove('on'); editing=null;
+}
+
+/* ================= undo + toast ================= */
+function snapshot(){ undoSnap=JSON.parse(JSON.stringify({D,seq})); }
+function undo(){ if(!undoSnap)return; D=undoSnap.D; seq=undoSnap.seq; undoSnap=null; save(); render(); toast('Undone'); }
+let tt;
+function toast(msg,withUndo){
+  const el=document.getElementById('toast');
+  el.innerHTML=esc(msg)+(withUndo?' <button onclick="undo()">Undo</button>':'');
+  el.classList.add('on'); clearTimeout(tt); tt=setTimeout(()=>el.classList.remove('on'),withUndo?5000:2200);
+}
+
+/* ================= controls ================= */
+function setView(v){view=v;render();}
+function setF(k,v){F[k]=v;document.querySelectorAll(`[data-f="${k}"]`).forEach(b=>b.classList.toggle('on',b.dataset.v===v));render();}
+function toggleF(k,v){F[k]=F[k]?null:v;document.querySelector(`[data-f="${k}"]`).classList.toggle('on',!!F[k]);render();}
+function shift(n){ const d=new Date(anchor); view==='week'?d.setDate(d.getDate()+7*n):d.setMonth(d.getMonth()+n); anchor=d; render(); }
+function goToday(){ anchor=new Date(TODAY); render(); }
+function exportCSV(){
+  const rows=[['Date','Time','Title (EN)','العنوان (عربي)','Format','Pillar','Platforms','Owner','Status','Approval route','Note']]
+    .concat(D.slice().sort((a,b)=>(a.d+a.t).localeCompare(b.d+b.t))
+      .map(p=>[p.d,p.t,p.en,p.arT,p.fmt,p.pillar,p.pf.join(' / '),p.owner,STATUS[p.status],p.route,p.note]));
+  const csv='\uFEFF'+rows.map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+  a.download='nma-content-plan.csv'; a.click(); toast('CSV exported');
+}
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape') closeEd();
+  if(e.key.toLowerCase()==='n'&&!editing&&!/input|textarea|select/i.test(e.target.tagName)){e.preventDefault();newPost();}
+});
+render();
+</script>
+</body>
+</html>
