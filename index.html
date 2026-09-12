@@ -81,6 +81,9 @@ h1 em{font-family:'IBM Plex Serif',serif;font-style:italic;font-weight:300;color
 @keyframes kb{from{transform:scale(1)}to{transform:scale(1.08)}}
 .hero .bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(15,15,16,.92) 0%,rgba(15,15,16,.7) 38%,rgba(15,15,16,.15) 70%,rgba(15,15,16,.35) 100%),linear-gradient(180deg,rgba(15,15,16,.35) 0%,rgba(15,15,16,0) 25%,rgba(15,15,16,.98) 100%)}
 .hero .wrap{position:relative;z-index:1}
+.sizzle{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:.55}
+.hero.has-sizzle{min-height:88vh;display:flex;align-items:flex-end}
+.hero.has-sizzle::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,15,16,.2),rgba(15,15,16,.95));z-index:0}
 .hero .meta{display:flex;justify-content:space-between;gap:20px;margin-bottom:64px}
 .hero .meta .eyebrow:last-child{text-align:right;max-width:26ch}
 .hero .vision{margin-bottom:14px}
@@ -105,6 +108,10 @@ h1 em{font-family:'IBM Plex Serif',serif;font-style:italic;font-weight:300;color
 .marquee span.ar{font-weight:500;color:var(--blue-soft)}
 @keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 @media (prefers-reduced-motion:reduce){.marquee .track{animation:none}.hero .bg img{animation:none}}
+.duo{background:#1E36C9}
+.duo .art{background:#1E36C9!important}
+.duo > img,.duo .fimg{filter:grayscale(1) contrast(1.15) brightness(.92);mix-blend-mode:screen;transition:filter .45s ease}
+.duo:hover > img,.duo:hover .fimg{filter:none;mix-blend-mode:normal}
 /* films */
 .feature{position:relative;width:100%;aspect-ratio:16/9;background:#000;border:1px solid var(--line);margin-bottom:22px}
 .feature iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
@@ -139,6 +146,12 @@ h1 em{font-family:'IBM Plex Serif',serif;font-style:italic;font-weight:300;color
 .film .extra button:hover{border-bottom-color:var(--blue-soft)}
 @media (max-width:760px){.films{grid-template-columns:1fr;gap:40px}}
 
+.onair{margin-top:90px;padding-top:56px;border-top:1px solid var(--line)}
+.ongrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.ongrid button{display:block;width:100%;aspect-ratio:16/9;overflow:hidden;position:relative;border:1px solid var(--line)}
+.ongrid img{width:100%;height:100%;object-fit:cover}
+.ongrid .cap{position:absolute;left:0;right:0;bottom:0;padding:12px 16px;background:linear-gradient(transparent,rgba(0,0,0,.85));color:#fff;font-size:12px;letter-spacing:.08em;text-transform:uppercase;display:flex;justify-content:space-between;z-index:2}
+@media (max-width:760px){.ongrid{grid-template-columns:1fr}}
 .boards{margin-top:90px;padding-top:56px;border-top:1px solid var(--line)}
 .bhead{display:flex;justify-content:space-between;align-items:end;gap:20px;margin-bottom:26px}
 .bhead h3{margin-top:10px}
@@ -322,6 +335,7 @@ h1 em{font-family:'IBM Plex Serif',serif;font-style:italic;font-weight:300;color
 .tri{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:28px}
 .tri.six{grid-template-columns:repeat(3,1fr)}
 .tri.six button{aspect-ratio:4/5}
+.duoset button{background:#1E36C9}.duoset button .art{background:#1E36C9!important}.duoset button > img{filter:grayscale(1) contrast(1.15) brightness(.92);mix-blend-mode:screen;transition:filter .45s}.duoset button:hover > img{filter:none;mix-blend-mode:normal}
 .tri button{display:block;aspect-ratio:9/14;background:#23242B;overflow:hidden;position:relative;border:1px solid var(--line);width:100%}
 .tri img{width:100%;height:100%;object-fit:cover}
 .tri .cap{position:absolute;left:0;right:0;bottom:0;padding:10px 12px;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;background:linear-gradient(transparent,rgba(0,0,0,.8));color:#fff}
@@ -440,6 +454,7 @@ footer .mail{margin-top:36px;padding-top:24px;border-top:1px solid var(--line);d
       <span class="eyebrow">National Media Authority</span>
       <span class="eyebrow">Social media &amp; creative proposal · 2026</span>
     </div>
+    <video id="sizzle" class="sizzle" autoplay muted loop playsinline preload="metadata" hidden></video>
     <div class="eyebrow vision">A vision by Stellar Media</div>
     <h1>Media, seen<br><em>differently.</em></h1>
     <div class="cols">
@@ -469,7 +484,7 @@ footer .mail{margin-top:36px;padding-top:24px;border-top:1px solid var(--line);d
 
     <div style="margin-top:48px">
       <div class="feature" id="feature">
-        <button class="fposter" type="button" aria-label="Play Beyond the Headline">
+        <button class="fposter duo" type="button" aria-label="Play Beyond the Headline">
           <img class="fimg" src="https://drive.google.com/thumbnail?id=1qxAgaEqVSDiNdYsz4MM6kTj5oHwk850O&sz=w1600" alt="" onerror="this.remove()">
           <span class="fart"><span class="eyebrow">Behind NMA · original film · 1:07</span><span class="ftxt"><b>Beyond the Headline</b><span class="ar">ما وراء العنوان</span></span></span>
           <span class="play big"></span>
@@ -482,43 +497,52 @@ footer .mail{margin-top:36px;padding-top:24px;border-top:1px solid var(--line);d
 
     <div class="films">
       <article class="film">
-        <button class="poster" data-kind="video" data-id="1_vGuSFXuTYonckUjSQjqRGWvCAAoouHm" data-ar="تلفزيون أبوظبي، 57 عامًا" data-sub="Media heritage · 1:12"><img src="https://drive.google.com/thumbnail?id=1_vGuSFXuTYonckUjSQjqRGWvCAAoouHm&sz=w1200" alt="" loading="lazy" onerror="this.style.display='none'"><span class="play"></span></button>
+        <button class="poster duo" data-kind="video" data-id="1_vGuSFXuTYonckUjSQjqRGWvCAAoouHm" data-ar="تلفزيون أبوظبي، 57 عامًا" data-sub="Media heritage · 1:12"><img src="https://drive.google.com/thumbnail?id=1_vGuSFXuTYonckUjSQjqRGWvCAAoouHm&sz=w1200" alt="" loading="lazy" onerror="this.style.display='none'"><span class="play"></span></button>
         <div class="fmeta"><span class="eyebrow">Media heritage</span><span class="dur">1:12</span></div>
         <div class="ftitle">57 Years of Abu Dhabi TV</div>
         <p class="fdesc">A film connecting a broadcasting milestone with the memories, people, and shared experiences around television.</p>
       </article>
       <article class="film">
-        <button class="poster" data-kind="video" data-id="1QrQFuJaIqYaLVjTptAdv4jAIQHwI7crn" data-ar="يوم المرأة الإماراتية" data-title="Emirati Women's Day" data-sub="People and legacy · film"><img src="https://drive.google.com/thumbnail?id=1QrQFuJaIqYaLVjTptAdv4jAIQHwI7crn&sz=w1200" alt="" loading="lazy" onerror="this.style.display='none'"><span class="play"></span></button>
+        <button class="poster duo" data-kind="video" data-id="1QrQFuJaIqYaLVjTptAdv4jAIQHwI7crn" data-ar="يوم المرأة الإماراتية" data-title="Emirati Women's Day" data-sub="People and legacy · film"><img src="https://drive.google.com/thumbnail?id=1QrQFuJaIqYaLVjTptAdv4jAIQHwI7crn&sz=w1200" alt="" loading="lazy" onerror="this.style.display='none'"><span class="play"></span></button>
         <div class="fmeta"><span class="eyebrow">People &amp; legacy</span><span class="dur">Film &amp; storyboard</span></div>
         <div class="ftitle">Emirati Women's Day</div>
         <p class="fdesc">A tribute connecting pioneering Emirati women in media with the voices and generations that followed.</p>
         <div class="extra"><button data-kind="image" data-id="1yXM1QzOq4Fs7Ic9zxnlCWB8GyQ78SB9X" data-title="Emirati Women's Day" data-sub="Storyboard">View the storyboard</button><button data-kind="video" data-id="1maQbCVCmQmUSJ115mQt3pFkgcDgS54h5" data-title="Emirati Women's Day" data-sub="Social cut">Social cut</button></div>
       </article>
       <article class="film">
-        <button class="poster" data-kind="video" data-id="10udNc347VRMLq491rF3sEXGfrc_2FRsT" data-ar="كم مرة قابلت الهيئة اليوم؟" data-title="How Many Times Did You Meet NMA Today?" data-sub="Everyday media · 1:03"><img src="https://drive.google.com/thumbnail?id=1aT5V_nMT9QIpoY7wFuCoCc6oeZXtxzXJ&sz=w1200" alt="" loading="lazy" onerror="this.style.display='none'"><span class="play"></span></button>
+        <button class="poster duo" data-kind="video" data-id="10udNc347VRMLq491rF3sEXGfrc_2FRsT" data-ar="كم مرة قابلت الهيئة اليوم؟" data-title="How Many Times Did You Meet NMA Today?" data-sub="Everyday media · 1:03"><img src="https://drive.google.com/thumbnail?id=1aT5V_nMT9QIpoY7wFuCoCc6oeZXtxzXJ&sz=w1200" alt="" loading="lazy" onerror="this.style.display='none'"><span class="play"></span></button>
         <div class="fmeta"><span class="eyebrow">Everyday media</span><span class="dur">1:03</span></div>
         <div class="ftitle">How Many Times Did You Meet NMA Today?</div>
         <p class="fdesc">A day of familiar screen moments reveals the unseen connections between media and NMA.</p>
       </article>
       <article class="film">
-        <button class="poster" data-kind="video" data-id="14MeNMb3gBVxpuE-FIURpUHE0j-stqWU6" data-ar="ما وراء الحدود" data-title="Beyond Limits" data-sub="The UAE story · film"><img src="https://drive.google.com/thumbnail?id=14MeNMb3gBVxpuE-FIURpUHE0j-stqWU6&sz=w1200" alt="" loading="lazy" onerror="this.style.display='none'"><span class="play"></span></button>
+        <button class="poster duo" data-kind="video" data-id="14MeNMb3gBVxpuE-FIURpUHE0j-stqWU6" data-ar="ما وراء الحدود" data-title="Beyond Limits" data-sub="The UAE story · film"><img src="https://drive.google.com/thumbnail?id=14MeNMb3gBVxpuE-FIURpUHE0j-stqWU6&sz=w1200" alt="" loading="lazy" onerror="this.style.display='none'"><span class="play"></span></button>
         <div class="fmeta"><span class="eyebrow">The UAE story</span><span class="dur">Film &amp; storyboard</span></div>
         <div class="ftitle">Beyond Limits</div>
         <p class="fdesc">The anniversary of the UAE's first human spaceflight, told through a story of ambition and possibility.</p>
         <div class="extra"><button data-kind="image" data-id="1SOkeT4orYOQbYxiMUPN_HPtUekeyKHJJ" data-title="Beyond Limits" data-sub="Storyboard">View the storyboard</button></div>
       </article>
       <article class="film">
-        <button class="poster" data-kind="video" data-id="1DyT6hcZWZ9OWNO85RQI0MyKQSCIemSCN" data-ar="رحلة التصنيف" data-title="The Rating Journey" data-sub="Media awareness · 0:37"><img src="https://drive.google.com/thumbnail?id=1DyT6hcZWZ9OWNO85RQI0MyKQSCIemSCN&sz=w1200" alt="" loading="lazy" onerror="this.style.display='none'"><span class="play"></span></button>
+        <button class="poster duo" data-kind="video" data-id="1DyT6hcZWZ9OWNO85RQI0MyKQSCIemSCN" data-ar="رحلة التصنيف" data-title="The Rating Journey" data-sub="Media awareness · 0:37"><img src="https://drive.google.com/thumbnail?id=1DyT6hcZWZ9OWNO85RQI0MyKQSCIemSCN&sz=w1200" alt="" loading="lazy" onerror="this.style.display='none'"><span class="play"></span></button>
         <div class="fmeta"><span class="eyebrow">Media awareness</span><span class="dur">0:37</span></div>
         <div class="ftitle">The Rating Journey</div>
         <p class="fdesc">A cinematic concept making age classifications more familiar through recognisable film moods.</p>
       </article>
       <article class="film">
-        <button class="poster" data-kind="video" data-id="1Fxej0MdQ8Z73lAgmqpQ2Yr9C_O-UXhBa" data-ar="التصنيف العمري" data-title="Understanding Age Ratings" data-sub="Motion graphics · 0:31"><img src="https://drive.google.com/thumbnail?id=1Fxej0MdQ8Z73lAgmqpQ2Yr9C_O-UXhBa&sz=w1200" alt="" loading="lazy" onerror="this.style.display='none'"><span class="play"></span></button>
+        <button class="poster duo" data-kind="video" data-id="1Fxej0MdQ8Z73lAgmqpQ2Yr9C_O-UXhBa" data-ar="التصنيف العمري" data-title="Understanding Age Ratings" data-sub="Motion graphics · 0:31"><img src="https://drive.google.com/thumbnail?id=1Fxej0MdQ8Z73lAgmqpQ2Yr9C_O-UXhBa&sz=w1200" alt="" loading="lazy" onerror="this.style.display='none'"><span class="play"></span></button>
         <div class="fmeta"><span class="eyebrow">Motion graphics</span><span class="dur">0:31</span></div>
         <div class="ftitle">Understanding Age Ratings <span class="ar">التصنيف العمري</span></div>
         <p class="fdesc">A separate motion treatment translating age-classification messages into a social video.</p>
       </article>
+    </div>
+
+    <div class="onair">
+      <div class="bhead"><div><div class="eyebrow">Already on air for NMA</div><h3>Proof before promise.</h3></div><div class="ar">أعمال منشورة للهيئة</div></div>
+      <p class="lead" style="margin-bottom:26px">Stellar Media already produces for the National Media Authority: the UAE media history documentary, the Emirati women media pioneers series, and the Abu Dhabi TV anniversary film. The same team, the same standard, already in NMA's feed.</p>
+      <div class="ongrid">
+        <button class="duo" data-kind="video" data-id="1_vGuSFXuTYonckUjSQjqRGWvCAAoouHm" data-title="57 Years of Abu Dhabi TV" data-ar="تلفزيون أبوظبي، 57 عامًا" data-sub="Published · media heritage"><img src="https://drive.google.com/thumbnail?id=1_vGuSFXuTYonckUjSQjqRGWvCAAoouHm&sz=w1200" alt="" loading="lazy"><span class="cap"><span>57 Years of Abu Dhabi TV · published</span><span>↗</span></span></button>
+        <button class="duo" data-kind="video" data-id="1QrQFuJaIqYaLVjTptAdv4jAIQHwI7crn" data-title="Emirati women media pioneers" data-ar="رائدات الإعلام الإماراتي" data-sub="Published · Emirati Women's Day series"><img src="https://drive.google.com/thumbnail?id=1QrQFuJaIqYaLVjTptAdv4jAIQHwI7crn&sz=w1200" alt="" loading="lazy"><span class="cap"><span>رائدات الإعلام الإماراتي · published</span><span>↗</span></span></button>
+      </div>
     </div>
 
     <div class="boards">
@@ -748,14 +772,14 @@ footer .mail{margin-top:36px;padding-top:24px;border-top:1px solid var(--line);d
         <button class="link" data-kind="pdf" data-id="1-u4yucM7Fbcv6DM90tDc6glwohgJjmgO" data-title="NMA Content Plan" data-sub="75 pages">Explore the 75-page content plan ↗</button>
       </div>
       <div class="tiles">
-        <button class="tile" data-kind="video" data-id="14MeNMb3gBVxpuE-FIURpUHE0j-stqWU6" data-title="UAE story &amp; achievements" data-sub="Beyond Limits"><img src="https://drive.google.com/thumbnail?id=14MeNMb3gBVxpuE-FIURpUHE0j-stqWU6&sz=w800" alt="" loading="lazy" onerror="this.style.display='none'"><div class="tt"><i>01</i><b>UAE story &amp; achievements</b><span class="ar">قصة الإمارات وإنجازاتها</span></div></button>
-        <button class="tile" data-kind="video" data-id="1QrQFuJaIqYaLVjTptAdv4jAIQHwI7crn" data-title="People who shaped UAE media" data-sub="Emirati Women's Day"><img src="https://drive.google.com/thumbnail?id=1QrQFuJaIqYaLVjTptAdv4jAIQHwI7crn&sz=w800" alt="" loading="lazy" onerror="this.style.display='none'"><div class="tt"><i>02</i><b>People who shaped UAE media</b><span class="ar">الأشخاص الذين صنعوا المشهد الإعلامي</span></div></button>
-        <button class="tile" data-kind="video" data-id="1qxAgaEqVSDiNdYsz4MM6kTj5oHwk850O" data-title="Behind NMA" data-sub="Beyond the Headline"><img src="https://drive.google.com/thumbnail?id=1qxAgaEqVSDiNdYsz4MM6kTj5oHwk850O&sz=w800" alt="" loading="lazy" onerror="this.style.display='none'"><div class="tt"><i>03</i><b>Behind NMA</b><span class="ar">ما وراء الهيئة</span></div></button>
-        <button class="tile" data-kind="video" data-id="1c3fzFEX2tJqiui1q7caPcYN-J5tI1Nnu" data-title="Youth &amp; talent enablement" data-sub="From a Screen to an Industry"><img src="https://drive.google.com/thumbnail?id=1c3fzFEX2tJqiui1q7caPcYN-J5tI1Nnu&sz=w800" alt="" loading="lazy" onerror="this.style.display='none'"><div class="tt"><i>04</i><b>Youth &amp; talent enablement</b><span class="ar">تمكين الشباب والمواهب</span></div></button>
-        <button class="tile" data-kind="video" data-id="1DyT6hcZWZ9OWNO85RQI0MyKQSCIemSCN" data-title="Media awareness &amp; responsible creativity" data-sub="The Rating Journey"><img src="https://drive.google.com/thumbnail?id=1DyT6hcZWZ9OWNO85RQI0MyKQSCIemSCN&sz=w800" alt="" loading="lazy" onerror="this.style.display='none'"><div class="tt"><i>05</i><b>Media awareness &amp; responsible creativity</b><span class="ar">التوعية والتعليم الإعلامي</span></div></button>
-        <button class="tile" data-kind="video" data-id="1_vGuSFXuTYonckUjSQjqRGWvCAAoouHm" data-title="UAE media history &amp; national memory" data-sub="57 Years of Abu Dhabi TV"><img src="https://drive.google.com/thumbnail?id=1_vGuSFXuTYonckUjSQjqRGWvCAAoouHm&sz=w800" alt="" loading="lazy" onerror="this.style.display='none'"><div class="tt"><i>06</i><b>UAE media history &amp; national memory</b><span class="ar">تاريخ الإعلام الإماراتي والذاكرة الوطنية</span></div></button>
-        <button class="tile" data-kind="image" data-src="https://nma-stellar-showcase.ar999.chatgpt.site/assets/concept-1.webp" data-title="The future of media" data-sub="Through NMA's perspective"><img src="https://nma-stellar-showcase.ar999.chatgpt.site/assets/concept-1.webp" alt="" loading="lazy" onerror="this.style.display='none'"><div class="tt"><i>07</i><b>The future of media</b><span class="ar">مستقبل الإعلام</span></div></button>
-        <button class="tile" data-kind="video" data-id="1859sYfP8wPLEe4r-29plffnH4nQGxFxA" data-title="Engagement &amp; community" data-sub="Ask, We'll Explain"><img src="https://drive.google.com/thumbnail?id=1859sYfP8wPLEe4r-29plffnH4nQGxFxA&sz=w800" alt="" loading="lazy" onerror="this.style.display='none'"><div class="tt"><i>08</i><b>Engagement &amp; community</b><span class="ar">المشاركة والحوار المجتمعي</span></div></button>
+        <button class="tile duo" data-kind="video" data-id="14MeNMb3gBVxpuE-FIURpUHE0j-stqWU6" data-title="UAE story &amp; achievements" data-sub="Beyond Limits"><img src="https://drive.google.com/thumbnail?id=14MeNMb3gBVxpuE-FIURpUHE0j-stqWU6&sz=w800" alt="" loading="lazy" onerror="this.style.display='none'"><div class="tt"><i>01</i><b>UAE story &amp; achievements</b><span class="ar">قصة الإمارات وإنجازاتها</span></div></button>
+        <button class="tile duo" data-kind="video" data-id="1QrQFuJaIqYaLVjTptAdv4jAIQHwI7crn" data-title="People who shaped UAE media" data-sub="Emirati Women's Day"><img src="https://drive.google.com/thumbnail?id=1QrQFuJaIqYaLVjTptAdv4jAIQHwI7crn&sz=w800" alt="" loading="lazy" onerror="this.style.display='none'"><div class="tt"><i>02</i><b>People who shaped UAE media</b><span class="ar">الأشخاص الذين صنعوا المشهد الإعلامي</span></div></button>
+        <button class="tile duo" data-kind="video" data-id="1qxAgaEqVSDiNdYsz4MM6kTj5oHwk850O" data-title="Behind NMA" data-sub="Beyond the Headline"><img src="https://drive.google.com/thumbnail?id=1qxAgaEqVSDiNdYsz4MM6kTj5oHwk850O&sz=w800" alt="" loading="lazy" onerror="this.style.display='none'"><div class="tt"><i>03</i><b>Behind NMA</b><span class="ar">ما وراء الهيئة</span></div></button>
+        <button class="tile duo" data-kind="video" data-id="1c3fzFEX2tJqiui1q7caPcYN-J5tI1Nnu" data-title="Youth &amp; talent enablement" data-sub="From a Screen to an Industry"><img src="https://drive.google.com/thumbnail?id=1c3fzFEX2tJqiui1q7caPcYN-J5tI1Nnu&sz=w800" alt="" loading="lazy" onerror="this.style.display='none'"><div class="tt"><i>04</i><b>Youth &amp; talent enablement</b><span class="ar">تمكين الشباب والمواهب</span></div></button>
+        <button class="tile duo" data-kind="video" data-id="1DyT6hcZWZ9OWNO85RQI0MyKQSCIemSCN" data-title="Media awareness &amp; responsible creativity" data-sub="The Rating Journey"><img src="https://drive.google.com/thumbnail?id=1DyT6hcZWZ9OWNO85RQI0MyKQSCIemSCN&sz=w800" alt="" loading="lazy" onerror="this.style.display='none'"><div class="tt"><i>05</i><b>Media awareness &amp; responsible creativity</b><span class="ar">التوعية والتعليم الإعلامي</span></div></button>
+        <button class="tile duo" data-kind="video" data-id="1_vGuSFXuTYonckUjSQjqRGWvCAAoouHm" data-title="UAE media history &amp; national memory" data-sub="57 Years of Abu Dhabi TV"><img src="https://drive.google.com/thumbnail?id=1_vGuSFXuTYonckUjSQjqRGWvCAAoouHm&sz=w800" alt="" loading="lazy" onerror="this.style.display='none'"><div class="tt"><i>06</i><b>UAE media history &amp; national memory</b><span class="ar">تاريخ الإعلام الإماراتي والذاكرة الوطنية</span></div></button>
+        <button class="tile duo" data-kind="image" data-src="https://nma-stellar-showcase.ar999.chatgpt.site/assets/concept-1.webp" data-title="The future of media" data-sub="Through NMA's perspective"><img src="https://nma-stellar-showcase.ar999.chatgpt.site/assets/concept-1.webp" alt="" loading="lazy" onerror="this.style.display='none'"><div class="tt"><i>07</i><b>The future of media</b><span class="ar">مستقبل الإعلام</span></div></button>
+        <button class="tile duo" data-kind="video" data-id="1859sYfP8wPLEe4r-29plffnH4nQGxFxA" data-title="Engagement &amp; community" data-sub="Ask, We'll Explain"><img src="https://drive.google.com/thumbnail?id=1859sYfP8wPLEe4r-29plffnH4nQGxFxA&sz=w800" alt="" loading="lazy" onerror="this.style.display='none'"><div class="tt"><i>08</i><b>Engagement &amp; community</b><span class="ar">المشاركة والحوار المجتمعي</span></div></button>
       </div>
     </div>
 
@@ -842,7 +866,7 @@ footer .mail{margin-top:36px;padding-top:24px;border-top:1px solid var(--line);d
         <h3>Expertise that starts<br>a conversation.</h3>
         <p>A bilingual editorial calendar spanning media talent, the creative economy, public trust, and NMA's initiatives. August, produced and ready.</p>
         <button class="btn" data-kind="pdf" data-id="1N1kEGXdFKnc2xDAyur_Oclh27J8R0gEB" data-title="LinkedIn content calendar" data-sub="August 2026 · 65 pages">Explore the full calendar ↗</button>
-        <div class="tri six">
+        <div class="tri six duoset">
           <button data-kind="video" data-id="1qx9pMhH1vAyJXoC_DQ9A5AaJzrl68FIj" data-title="Post 1" data-sub="How Many Times Did You Meet NMA Today?"><img src="https://drive.google.com/thumbnail?id=1qx9pMhH1vAyJXoC_DQ9A5AaJzrl68FIj&sz=w600" alt="" loading="lazy" onerror="this.style.display='none'"><span class="cap">Post 1</span></button>
           <button data-kind="video" data-id="1c3fzFEX2tJqiui1q7caPcYN-J5tI1Nnu" data-title="Post 2" data-sub="From a Screen to an Industry"><img src="https://drive.google.com/thumbnail?id=1c3fzFEX2tJqiui1q7caPcYN-J5tI1Nnu&sz=w600" alt="" loading="lazy" onerror="this.style.display='none'"><span class="cap">Post 2</span></button>
           <button data-kind="video" data-id="1859sYfP8wPLEe4r-29plffnH4nQGxFxA" data-title="Post 3" data-sub="Ask, We'll Explain"><img src="https://drive.google.com/thumbnail?id=1859sYfP8wPLEe4r-29plffnH4nQGxFxA&sz=w600" alt="" loading="lazy" onerror="this.style.display='none'"><span class="cap">Post 3</span></button>
@@ -953,7 +977,9 @@ footer .mail{margin-top:36px;padding-top:24px;border-top:1px solid var(--line);d
     const id=b.dataset.id,kind=b.dataset.kind;
     mt.textContent=b.dataset.title||'';ms.textContent=b.dataset.sub||'';stage.innerHTML='';
     if(kind==='image'){const img=document.createElement('img');img.src=b.dataset.src||('https://drive.google.com/thumbnail?id='+id+'&sz=w2000');img.alt=b.dataset.title||'';stage.appendChild(img);}
-    else{const f=document.createElement('iframe');f.src='https://drive.google.com/file/d/'+id+'/preview';f.allow='autoplay; fullscreen';f.allowFullscreen=true;f.title=b.dataset.title||'';if(kind==='pdf')f.className='tall';stage.appendChild(f);}
+    else{const f=document.createElement('iframe');
+      const v=b.dataset.vimeo,y=b.dataset.yt;
+      f.src=v?('https://player.vimeo.com/video/'+v+'?autoplay=1&title=0&byline=0&portrait=0&color=5B7CFF'):y?('https://www.youtube-nocookie.com/embed/'+y+'?autoplay=1&rel=0&modestbranding=1'):('https://drive.google.com/file/d/'+id+'/preview');f.allow='autoplay; fullscreen';f.allowFullscreen=true;f.title=b.dataset.title||'';if(kind==='pdf')f.className='tall';stage.appendChild(f);}
     last=b;modal.classList.add('on');document.body.style.overflow='hidden';mc.focus();
   }
   window.open2=open;
@@ -962,6 +988,10 @@ footer .mail{margin-top:36px;padding-top:24px;border-top:1px solid var(--line);d
   mc.addEventListener('click',close);
   modal.addEventListener('click',e=>{if(e.target===modal||e.target===stage)close();});
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.classList.contains('on'))close();});
+  /* Sizzle reel: set SIZZLE_URL to a direct .mp4 link when the edit is ready */
+  const SIZZLE_URL='';
+  const sz=document.getElementById('sizzle');
+  if(SIZZLE_URL&&sz){sz.src=SIZZLE_URL;sz.hidden=false;document.querySelector('.hero').classList.add('has-sizzle');}
   const fp=document.querySelector('.fposter');
   if(fp){fp.addEventListener('click',()=>{const f=document.createElement('iframe');f.src='https://drive.google.com/file/d/1qxAgaEqVSDiNdYsz4MM6kTj5oHwk850O/preview';f.allow='autoplay; fullscreen';f.allowFullscreen=true;f.title='Beyond the Headline';fp.replaceWith(f);});}
   /* build the designed art layer for every media tile */
